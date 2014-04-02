@@ -22,3 +22,6 @@ tmp
 # Ignore RubyMine
 \.idea/workspace.xml
 
+# Ignore Models files
+app/models/.*\.rb
+test/models/.*\.rb
