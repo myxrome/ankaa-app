@@ -57,5 +57,6 @@ AnkaaApp::Application.routes.draw do
   get '/:key/v', to: 'values#value', key: /.{32}/
   get '/:key/c', to: 'categories#category', key: /.{32}/
   get '/p', to: 'partners#index'
+  get '/u0', to: 'partners#urls'
 
 end
