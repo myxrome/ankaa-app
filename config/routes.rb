@@ -53,10 +53,6 @@ AnkaaApp::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  get '/:key', to: 'topics#index', key: /.{32}/
-  get '/:key/v', to: 'values#value', key: /.{32}/
-  get '/:key/c', to: 'categories#category', key: /.{32}/
-  get '/p', to: 'partners#index'
-  get '/u0', to: 'partners#urls'
+  root to: 'application_data#index'
 
 end

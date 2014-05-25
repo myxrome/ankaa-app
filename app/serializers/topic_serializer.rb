@@ -1,6 +1,25 @@
 class TopicSerializer < ActiveModel::Serializer
-  attributes :id, :key, :name, :updated_at
+  require 'concerns/model_concern'
+  include ModelConcern
 
-  has_many :values, serializer: ValueShortSerializer
-  has_many :categories, serializer: CategoryShortSerializer
+  attributes :id, :k, :n, :u
+  has_many :v
+  has_many :c
+
+  def k
+    object.key
+  end
+
+  def n
+    object.name
+  end
+
+  def v
+    object.values
+  end
+
+  def c
+    object.categories
+  end
+
 end

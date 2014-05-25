@@ -1,7 +1,18 @@
 class CategorySerializer < ActiveModel::Serializer
-  attributes :id, :topic_id, :order, :name
+  require 'concerns/model_concern'
+  include ModelConcern
 
-  def name
+  attributes :id, :_id, :o, :n, :u
+
+  def _id
+    object.topic_id
+  end
+
+  def o
+    object.order
+  end
+
+  def n
     object.displayed_name
   end
 

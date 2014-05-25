@@ -1,8 +1,15 @@
 class PartnerSerializer < ActiveModel::Serializer
-  attributes :id, :name, :url, :logo, :updated_at
+  require 'concerns/model_concern'
+  include ModelConcern
 
-  def logo
-    object.logo.url
+  attributes :id, :n, :url, :l, :u
+
+  def n
+    object.name
+  end
+
+  def l
+  object.logo.url
   end
 
 end
