@@ -13,18 +13,18 @@ class PromoSerializer < ActiveModel::Serializer
   end
 
   def x
-  object.image.url(:xhdpi)
+    object.image.url(:xhdpi)
   end
 
   def h
-  object.image.url(:hdpi)
+    object.image.url(:hdpi)
   end
 
   def m
-  object.image.url(:mdpi)
+    object.image.url(:mdpi)
   end
 
   def l
-  object.image.url(:ldpi)
+    object.image.url(:ldpi)
   end
 end

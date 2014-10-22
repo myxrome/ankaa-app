@@ -2,24 +2,14 @@ class TopicSerializer < ActiveModel::Serializer
   require 'concerns/model_concern'
   include ModelConcern
 
-  attributes :id, :k, :n, :u
-  has_many :v
-  has_many :c
+  attributes :id, :_id, :a, :o, :n, :u
 
-  def k
-    object.key
+  def _id
+    object.topic_group_id
   end
 
   def n
-    object.name
-  end
-
-  def v
-    object.values
-  end
-
-  def c
-    object.categories
+    object.displayed_name
   end
 
 end

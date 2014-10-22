@@ -2,14 +2,18 @@ class PartnerSerializer < ActiveModel::Serializer
   require 'concerns/model_concern'
   include ModelConcern
 
-  attributes :id, :n, :url, :l, :u
+  attributes :id, :a, :n, :l, :lg, :u
 
   def n
     object.name
   end
 
   def l
-  object.logo.url
+    object.url
+  end
+
+  def lg
+    object.logo.url
   end
 
 end

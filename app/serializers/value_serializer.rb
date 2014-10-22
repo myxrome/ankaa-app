@@ -2,8 +2,7 @@ class ValueSerializer < ActiveModel::Serializer
   require 'concerns/model_concern'
   include ModelConcern
 
-  attributes :id, :_id, :n, :t, :op, :np, :ds,
-             :url, :e, :u
+  attributes :id, :_id, :a, :n, :t, :op, :np, :ds, :l, :u
   has_many :d
   has_many :p
 
@@ -31,12 +30,12 @@ class ValueSerializer < ActiveModel::Serializer
     object.discount
   end
 
-  def e
-    object.end_date
-  end
-
   def d
     object.descriptions
+  end
+
+  def l
+    object.url
   end
 
   def p

@@ -17,6 +17,14 @@
       <user-password>dfe1dfc6dfc5dfdadfc3dfc1df9bdf9d</user-password>
       <libraries />
     </data-source>
+    <data-source source="LOCAL" name="Rails ankaa-app: statistic_development" uuid="67a272ac-5860-4e66-b336-0368ce2e831b">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1:5432/statisticdb</jdbc-url>
+      <user-name>statistic</user-name>
+      <user-password>dfe1dfc6dfc5dfdadfc3dfc1df9bdf9d</user-password>
+      <libraries />
+    </data-source>
   </component>
 </project>
 
