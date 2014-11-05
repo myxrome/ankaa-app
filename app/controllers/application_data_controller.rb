@@ -1,10 +1,10 @@
 class ApplicationDataController < ActionController::Base
 
   def index
-    @topic_groups = TopicGroup.where(key: params[:k])
-    @topics = Topic.where(topic_group: @topic_groups)
-    @categoies = Category.where(topic: @topics)
-    @values = Value.where(category: @categoies)
+    @topic_groups = TopicGroup.where(key: params[:k], active: true)
+    @topics = Topic.where(topic_group: @topic_groups, active: true)
+    @categoies = Category.where(topic: @topics, active: true)
+    @values = Value.where(category: @categoies, active: true)
     @partners = Partner.all
 
     @application_data = ApplicationData.new filter_by_updated_at(@topic_groups),
