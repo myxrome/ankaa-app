@@ -6,4 +6,10 @@
   <data-source source="LOCAL" name="Rails ankaa-app: development" uuid="1a2bd5d4-18c7-4e16-9dcd-8306ecdfb7ae">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
+  <data-source source="LOCAL" name="Rails ankaa-app: statistic_development" uuid="67a272ac-5860-4e66-b336-0368ce2e831b">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source source="LOCAL" name="Rails ankaa-app: statistic_production" uuid="cdf0385e-e25f-46db-a2f5-556068ede283">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>
