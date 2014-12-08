@@ -6,6 +6,8 @@ gem 'paperclip'
 gem 'ankaa-statistic', '0.9.3', git: 'git@bitbucket.org:myxrome/ankaa-statistic.git'
 gem 'ankaa-content', '0.9.1.1', git: 'git@bitbucket.org:myxrome/ankaa-content.git'
 gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 gem 'figaro'
 
 group :development do

@@ -4,7 +4,7 @@ class ApplicationDataController < ActionController::Base
     @topic_groups = TopicGroup.where(key: params[:k], active: true)
     @topics = Topic.where(topic_group: @topic_groups, active: true)
     @categories = Category.where(topic: @topics, active: true)
-    @values = Value.where(category: @categories, active: true)
+    @values = Value.eager_load([:promos, descriptions: :description_template]).where(category: @categories, active: true)
     @partners = Partner.all
 
     @application_data = ApplicationData.new filter_by_updated_at(@topic_groups),
@@ -12,7 +12,7 @@ class ApplicationDataController < ActionController::Base
                                             filter_by_updated_at(@categories),
                                             filter_by_updated_at(@values),
                                             filter_by_updated_at(@partners)
-    render json: @application_data
+    render json: Oj.dump(ApplicationDataSerializer.new(@application_data), mode: :compat)
   end
 
   private

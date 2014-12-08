@@ -81,6 +81,8 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    oj (2.11.1)
+    oj_mimic_json (1.0.1)
     paperclip (4.2.0)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -146,6 +148,8 @@ DEPENDENCIES
   capistrano-rails (~> 1.1)
   capistrano-rbenv (~> 2.0)
   figaro
+  oj
+  oj_mimic_json
   paperclip
   pg
   rails (= 4.1.1)
