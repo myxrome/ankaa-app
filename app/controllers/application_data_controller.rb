@@ -41,11 +41,11 @@ _v as (
     and v.\"updated_at\" > '#{date}'
 ),
 d as (
-    select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, dt.\"caption\" as c, d.\"text\" as t,
-    d.\"red\" as r, d.\"bold\" as b, d.\"updated_at\" as u
-    from descriptions d, _v v, description_templates dt
+    select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o,
+    coalesce((select dt.\"caption\" from description_templates dt where dt.id = d.description_template_id), '') as c,
+    d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
+    from descriptions d, _v v
     where d.\"value_id\" = v.\"id\"
-    and dt.id = d.description_template_id
 ),
 p as (
     select p.\"id\" as id, p.\"value_id\" as _id, p.\"order\" as o,
