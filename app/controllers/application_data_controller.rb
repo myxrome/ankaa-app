@@ -2,7 +2,9 @@ class ApplicationDataController < ActionController::Base
 
   def index
     ActiveRecord::Base.establish_connection
-    result = ActiveRecord::Base.connection.execute lighting_query(params[:k], params[:u], params[:q])
+    result = ActiveRecord::Base.connection.execute lighting_query(params[:k],
+                                                                  normalize_date_time(params[:u]).to_s(:db),
+                                                                  params[:q])
     render json: result.first['d'].to_s
   end
 
@@ -67,6 +69,12 @@ ad as (
     (select coalesce(json_agg(row_to_json((v))), '[]') from v) as v
 )
 select row_to_json(ad) as d from ad;"
+  end
+
+  def normalize_date_time(datetime)
+      result = Time.parse datetime
+      result = result.floor(3.hours) + 10.minutes
+      result.utc
   end
 
 end
