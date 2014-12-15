@@ -53,6 +53,7 @@ AnkaaApp::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  get 'ad' => 'application_data#index'
+  get 'i' => 'application_data#initial'
+  get 'd' => 'application_data#delta'
 
 end
