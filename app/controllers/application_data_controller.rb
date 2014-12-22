@@ -23,7 +23,7 @@ class ApplicationDataController < ActionController::Base
 with tg as (
     select tg.\"id\" as id, tg.\"order\" as o, tg.\"active\" as a, tg.\"key\" as k, tg.\"name\" as n, tg.\"updated_at\" as u
     from topic_groups tg
-    where tg.\"key\" in ('#{keys.join(',')}')
+    where tg.\"key\" in ('#{keys.join("','")}')
     and tg.\"active\" = true
 ),
 t as (
@@ -84,7 +84,7 @@ select row_to_json(ad) as d from ad;"
 with tg as (
     select tg.\"id\" as id, tg.\"order\" as o, tg.\"active\" as a, tg.\"key\" as k, tg.\"name\" as n, tg.\"updated_at\" as u
     from topic_groups tg
-    where tg.\"key\" in ('#{keys.join(',')}')
+    where tg.\"key\" in ('#{keys.join("','")}')
 ),
 t as (
     select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n, t.\"updated_at\" as u
