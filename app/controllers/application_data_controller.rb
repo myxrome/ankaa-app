@@ -81,32 +81,38 @@ with tg as (
 ),
 t as (
     select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n, t.\"updated_at\" as u
-    from topics t, tg tg
-    where t.\"topic_group_id\" = tg.\"id\"
+    from tg tg, topics t
+    where tg.\"active\" = true
+    and t.\"topic_group_id\" = tg.\"id\"
 ),
 c as (
     select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"name\" as n, c.\"updated_at\" as u
-    from categories c, t t
-    where c.\"topic_id\" = t.\"id\"
+    from t t, categories c
+    where t.\"active\" = true
+    and c.\"topic_id\" = t.\"id\"
 ),
 v as (
     select v.\"id\" as id, v.\"category_id\" as _id, v.\"active\" as a, v.\"name\" as n, v.\"old_price\" as op, v.\"new_price\" as np,
     v.\"discount\" as ds, '/content/v/' || v.\"id\" || '/thumb/#{quality}/'  || v.\"file_key\" || '.jpg' as t,
     v.\"url\" as l, v.\"updated_at\" as u
-    from values v, c c
-    where v.\"category_id\" = c.\"id\"
+    from c c, values v
+    where c.\"active\" = true
+    and v.\"category_id\" = c.\"id\"
 ),
 d as (
     select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, d.\"active\" as a, d.\"caption\" as c,
     d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
-    from descriptions d, v v
-    where d.\"value_id\" = v.\"id\"
+    from v v, descriptions d
+    where v.\"active\" = true
+    and d.\"value_id\" = v.\"id\"
 ),
 p as (
     select p.\"id\" as id, p.\"value_id\" as _id, p.\"order\" as o, p.\"active\" as a, 
     '/content/v/' || p.\"value_id\" || '/promo/#{quality}/' || p.\"id\" || p.\"file_key\" || '.jpg' as l,
     p.\"updated_at\" as u
-    from promos p, v v
+    from v v, promos p
+    where v.\"active\" = true
+    and p.\"value_id\" = v.\"id\"
 ),
 ad as (
     select (select coalesce(json_agg(row_to_json((tg))), '[]') from tg where tg.\"u\" > '#{date}') as g,
