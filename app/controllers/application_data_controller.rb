@@ -73,7 +73,7 @@ select row_to_json(ad) as d from ad;"
   end
 
   def delta_lighting_query(keys, date, quality)
-    "set work_mem = '16MB';
+"set work_mem = '16MB';
 with tg as (
     select tg.\"id\" as id, tg.\"order\" as o, tg.\"active\" as a, tg.\"key\" as k, tg.\"name\" as n, tg.\"updated_at\" as u
     from topic_groups tg
@@ -89,45 +89,32 @@ c as (
     from categories c, t t
     where c.\"topic_id\" = t.\"id\"
 ),
-_v as (
+v as (
     select v.\"id\" as id, v.\"category_id\" as _id, v.\"active\" as a, v.\"name\" as n, v.\"old_price\" as op, v.\"new_price\" as np,
-    v.\"discount\" as ds,
-    (select '/content/p/' || p.\"value_id\" || '/' || p.\"id\" || '/' || p.\"file_key\" || 'thumb.jpg'
-    from promos p
-    where p.\"value_id\" = v.\"id\"
-    and p.\"order\" = 1) as t,
+    v.\"discount\" as ds, '/content/v/' || v.\"id\" || '/thumb/#{quality}/'  || v.\"file_key\" || '.jpg' as t,
     v.\"url\" as l, v.\"updated_at\" as u
     from values v, c c
     where v.\"category_id\" = c.\"id\"
-    and v.\"updated_at\" > '#{date}'
 ),
 d as (
-    select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o,
-    coalesce((select dt.\"caption\" from description_templates dt where dt.id = d.description_template_id), '') as c,
+    select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, d.\"active\" as a, d.\"caption\" as c,
     d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
-    from descriptions d, _v v
+    from descriptions d, v v
     where d.\"value_id\" = v.\"id\"
-    and v.\"a\" = true
 ),
 p as (
-    select p.\"id\" as id, p.\"value_id\" as _id, p.\"order\" as o,
-    '/content/p/' || p.\"value_id\" || '/' || p.\"id\" || '/' || p.\"file_key\" || '#{quality}' || '.jpg' as l,
+    select p.\"id\" as id, p.\"value_id\" as _id, p.\"order\" as o, p.\"active\" as a, 
+    '/content/v/' || p.\"value_id\" || '/promo/#{quality}/' || p.\"id\" || p.\"file_key\" || '.jpg' as l,
     p.\"updated_at\" as u
-    from promos p, _v v
-    where p.\"value_id\" = v.\"id\"
-    and v.\"a\" = true
-),
-v as (
-    select _v.*,
-    ( select coalesce(json_agg(row_to_json((d))), '[]') from d d where d.\"_id\" = _v.\"id\") as d,
-    ( select coalesce(json_agg(row_to_json((p))), '[]') from p p where p.\"_id\" = _v.\"id\") as p
-    from _v _v
+    from promos p, v v
 ),
 ad as (
     select (select coalesce(json_agg(row_to_json((tg))), '[]') from tg where tg.\"u\" > '#{date}') as g,
     (select coalesce(json_agg(row_to_json((t))), '[]') from t where t.\"u\" > '#{date}') as t,
     (select coalesce(json_agg(row_to_json((c))), '[]') from c where c.\"u\" > '#{date}') as c,
-    (select coalesce(json_agg(row_to_json((v))), '[]') from v) as v
+    (select coalesce(json_agg(row_to_json((v))), '[]') from v where v.\"u\" > '#{date}') as v,
+    (select coalesce(json_agg(row_to_json((d))), '[]') from d where d.\"u\" > '#{date}') as d,
+    (select coalesce(json_agg(row_to_json((p))), '[]') from p where p.\"u\" > '#{date}') as p
 )
 select row_to_json(ad) as d from ad;"
   end
