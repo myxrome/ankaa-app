@@ -21,19 +21,19 @@ class ApplicationDataController < ActionController::Base
   def init_lighting_query(keys, quality) 
 "set work_mem = '16MB';
 with tg as (
-    select tg.\"id\" as id, tg.\"order\" as o, tg.\"active\" as a, tg.\"key\" as k, tg.\"name\" as n
+    select tg.\"id\" as id, tg.\"order\" as o, tg.\"active\" as a, tg.\"key\" as k, tg.\"name\" as n, tg.\"updated_at\" as u
     from topic_groups tg
     where tg.\"key\" in ('#{keys.join("','")}')
     and tg.\"active\" = true
 ),
 t as (
-    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n
+    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n, t.\"updated_at\" as u
     from topics t, tg tg
     where t.\"topic_group_id\" = tg.\"id\"
     and t.\"active\" = true
 ),
 c as (
-    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"name\" as n
+    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"name\" as n, c.\"updated_at\" as u
     from categories c, t t
     where c.\"topic_id\" = t.\"id\"
     and c.\"active\" = true
@@ -41,21 +41,21 @@ c as (
 v as (
     select v.\"id\" as id, v.\"category_id\" as _id, v.\"active\" as a, v.\"name\" as n, v.\"old_price\" as op, v.\"new_price\" as np,
     v.\"discount\" as ds, '/content/v/' || v.\"id\" || '/thumb/#{quality}/'  || v.\"file_key\" || '.jpg' as t,
-    v.\"url\" as l
+    v.\"url\" as l, v.\"updated_at\" as u
     from values v, c c
     where v.\"category_id\" = c.\"id\"
     and v.\"active\" = true
 ),
 d as (
     select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, d.\"active\" as a, d.\"caption\" as c,
-    d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b
+    d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
     from descriptions d, v v
     where d.\"value_id\" = v.\"id\"
     and d.\"active\" = true
 ),
 p as (
     select p.\"id\" as id, p.\"value_id\" as _id, p.\"order\" as o, p.\"active\" as a, 
-    '/content/v/' || p.\"value_id\" || '/promo/#{quality}/' || p.\"id\" || p.\"file_key\" || '.jpg' as l
+    '/content/v/' || p.\"value_id\" || '/promo/#{quality}/' || p.\"id\" || p.\"file_key\" || '.jpg' as l, p.\"updated_at\" as u
     from promos p, v v
     where p.\"value_id\" = v.\"id\"
     and p.\"active\" = true
@@ -161,12 +161,12 @@ p as (
 ),
 ad as (
     select
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select tg.\"id\", tg.\"o\", tg.\"a\", tg.\"k\", tg.\"n\" from tg where tg.\"u\" > '#{date}') w) as g,
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select t.\"id\", t.\"_id\", t.\"o\", t.\"a\", t.\"n\" from t where t.\"u\" > '#{date}') w) as t,
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select c.\"id\", c.\"_id\", c.\"o\", c.\"a\", c.\"n\" from c where c.\"u\" > '#{date}') w) as c,
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select v.\"id\", v.\"_id\", v.\"a\", v.\"n\", v.\"op\", v.\"np\", v.\"ds\", v.\"t\", v.\"l\" from v where v.\"u\" > '#{date}') w) as v,
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select d.\"id\", d.\"_id\", d.\"o\", d.\"a\", d.\"c\", d.\"t\", d.\"r\", d.\"b\" from d where d.\"u\" > '#{date}') w) as d,
-    (select coalesce(json_agg(row_to_json(w)), '[]') from (select p.\"id\", p.\"_id\", p.\"o\", p.\"a\", p.\"l\" from p where p.\"u\" > '#{date}') w) as p
+    (select coalesce(json_agg(row_to_json(tg)), '[]') from tg where tg.\"u\" > '#{date}') as g,
+    (select coalesce(json_agg(row_to_json(t)), '[]') from t where t.\"u\" > '#{date}') as t,
+    (select coalesce(json_agg(row_to_json(c)), '[]') from c where c.\"u\" > '#{date}') as c,
+    (select coalesce(json_agg(row_to_json(v)), '[]') from v where v.\"u\" > '#{date}') as v,
+    (select coalesce(json_agg(row_to_json(d)), '[]') from d where d.\"u\" > '#{date}') as d,
+    (select coalesce(json_agg(row_to_json(p)), '[]') from p where p.\"u\" > '#{date}') as p
 )
 select row_to_json(ad) as d from ad;"
   end
