@@ -173,7 +173,7 @@ select row_to_json(ad) as d from ad;"
 
   def normalize_date_time(datetime)
     result = Time.parse datetime
-    result = result.floor(3.hours) + 10.minutes
+    result = (result - 10.minutes).floor(1.hours) + 10.minutes
     result.utc
   end
 
