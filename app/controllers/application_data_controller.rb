@@ -27,13 +27,13 @@ with tg as (
     and tg.\"active\" = true
 ),
 t as (
-    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n, t.\"updated_at\" as u
+    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"displayed_name\" as n, t.\"updated_at\" as u
     from topics t, tg tg
     where t.\"topic_group_id\" = tg.\"id\"
     and t.\"active\" = true
 ),
 c as (
-    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"name\" as n, c.\"updated_at\" as u
+    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"displayed_name\" as n, c.\"updated_at\" as u
     from categories c, t t
     where c.\"topic_id\" = t.\"id\"
     and c.\"active\" = true
@@ -85,7 +85,7 @@ with tg as (
     and tg.\"active\" = false
 ),
 t as (
-    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"name\" as n, t.\"updated_at\" as u
+    select t.\"id\" as id, t.\"topic_group_id\" as _id, t.\"order\" as o, t.\"active\" as a, t.\"displayed_name\" as n, t.\"updated_at\" as u
     from tg tg, topics t
     where tg.\"a\" = true
     and t.\"topic_group_id\" = tg.\"id\"
@@ -98,7 +98,7 @@ t as (
     and t.\"active\" = false
 ),
 c as (
-    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"name\" as n, c.\"updated_at\" as u
+    select c.\"id\" as id, c.\"topic_id\" as _id, c.\"order\" as o, c.\"active\" as a, c.\"displayed_name\" as n, c.\"updated_at\" as u
     from t t, categories c
     where t.\"a\" = true
     and c.\"topic_id\" = t.\"id\"
