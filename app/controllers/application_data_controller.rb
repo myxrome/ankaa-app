@@ -48,7 +48,7 @@ v as (
 ),
 d as (
     select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, d.\"active\" as a, coalesce(d.\"caption\", '') as c,
-    d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
+    d.\"text\" as t, d.\"updated_at\" as u
     from descriptions d, v v
     where d.\"value_id\" = v.\"id\"
     and d.\"active\" = true
@@ -129,7 +129,7 @@ v as (
 ),
 d as (
     select d.\"id\" as id, d.\"value_id\" as _id, d.\"order\" as o, d.\"active\" as a, coalesce(d.\"caption\", '') as c,
-    d.\"text\" as t, coalesce(d.\"red\", false) as r, coalesce(d.\"bold\", false) as b, d.\"updated_at\" as u
+    d.\"text\" as t, d.\"updated_at\" as u
     from v v, descriptions d
     where v.\"a\" = true
     and d.\"value_id\" = v.\"id\"
