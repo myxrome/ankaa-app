@@ -136,7 +136,7 @@ d as (
     and d.\"active\" = true
     union
     select d.\"id\" as id, 0 as _id, 0 as o, d.\"active\" as a, '' as c,
-    '' as t, false as r, false as b, d.\"updated_at\" as u
+    '' as t, d.\"updated_at\" as u
     from v v, descriptions d
     where v.\"a\" = true
     and d.\"value_id\" = v.\"id\"
