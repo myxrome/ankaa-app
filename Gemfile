@@ -5,7 +5,7 @@ gem 'pg'
 gem 'figaro'
 
 group :development do
-  gem 'capistrano', '~> 3.1'
+  gem 'capistrano', '~> 3.4'
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-bundler'
   gem 'capistrano-rbenv', '~> 2.0'
